@@ -14,16 +14,19 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:5000/loginuser`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: credentials.email,
-          password: credentials.password,
-        }),
-      });
+      const response = await fetch(
+        `https://espacito-client.onrender.com/loginuser`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: credentials.email,
+            password: credentials.password,
+          }),
+        }
+      );
       const json = await response.json();
       console.log(json);
       if (!response.ok) {
@@ -37,7 +40,7 @@ const Login = () => {
         console.log("success");
         localStorage.setItem("userEmail", credentials.email);
         localStorage.setItem("authToken", json.authtoken);
-        localStorage.setItem("phonenumber",json.number);
+        localStorage.setItem("phonenumber", json.number);
         navigate("/");
       }
     } catch (error) {

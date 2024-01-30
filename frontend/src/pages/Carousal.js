@@ -8,7 +8,9 @@ export default function Carousal() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.post(`http://localhost:5000/getalldata`);
+        const response = await axios.post(
+          `https://espacito-client.onrender.com/getalldata`
+        );
         setData(response.data);
         console.log("Category Data:", data.categoryData);
         console.log("Food Data:", data.foodData);

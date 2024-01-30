@@ -5,15 +5,18 @@ export default function MyOrder() {
 
   const fetchMyOrder = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/myorderedData`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: localStorage.getItem("userEmail"),
-        }),
-      });
+      const response = await fetch(
+        `https://espacito-client.onrender.com/myorderedData`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: localStorage.getItem("userEmail"),
+          }),
+        }
+      );
 
       const data = await response.json();
       console.log("this");

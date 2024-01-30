@@ -19,19 +19,22 @@ export default function Signin() {
     e.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:5000/createuser`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: credentials.name,
-          phone: credentials.phone, // Updated field name for phone number
-          email: credentials.email,
-          password: credentials.password,
-          geolocation: credentials.geolocation,
-        }),
-      });
+      const response = await fetch(
+        `https://espacito-client.onrender.com/createuser`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: credentials.name,
+            phone: credentials.phone, // Updated field name for phone number
+            email: credentials.email,
+            password: credentials.password,
+            geolocation: credentials.geolocation,
+          }),
+        }
+      );
 
       if (!response.ok) {
         alert("There is some error. Please check it");

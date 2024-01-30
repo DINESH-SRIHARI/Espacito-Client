@@ -26,30 +26,32 @@ export default function Cart() {
       setLoading(true);
 
       var currentDate = new Date();
-var options = { 
-  year: 'numeric', 
-  month: '2-digit', 
-  day: '2-digit', 
-  hour: 'numeric', 
-  minute: 'numeric',
-  hour12: true
-};
+      var options = {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "numeric",
+        minute: "numeric",
+        hour12: true,
+      };
 
-var formattedDate = currentDate.toLocaleString('en-US', options);
+      var formattedDate = currentDate.toLocaleString("en-US", options);
 
-let response = await fetch(`http://localhost:5000/orderedData`, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    order_data: data,
-    email: userEmail,
-    phonenumber: number,
-    order_date: formattedDate,
-  }),
-});
-
+      let response = await fetch(
+        `https://espacito-client.onrender.com/orderedData`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            order_data: data,
+            email: userEmail,
+            phonenumber: number,
+            order_date: formattedDate,
+          }),
+        }
+      );
 
       console.log("JSON RESPONSE:::::", response.status);
 
