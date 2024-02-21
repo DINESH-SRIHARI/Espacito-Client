@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const jwtSecret="MyNameIsEnduvasiSrihariDinesh!@#"
 app.use(cors({
-  origin: ["http://localhost:3000", "https://espacito.netlify.app"],
+  origin: ["http://localhost:3000", ""],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
   optionsSuccessStatus: 204,
@@ -48,7 +48,6 @@ app.post('/getalldata', async (req, res) => {
       categoryData: allDatacat
     };
 
-    // Send the combined data as a JSON response
     res.json(combinedData);
   } catch (error) {
     console.error('Error fetching data:', error);
@@ -56,15 +55,7 @@ app.post('/getalldata', async (req, res) => {
   }
 });
 
-
-
-
-
-
-
-
-
-app.use(express.json()); // Parse JSON requests
+app.use(express.json()); 
 
 
 const { body, validationResult } = require('express-validator');
@@ -74,7 +65,6 @@ app.post("/createuser", [
   body('email').isEmail(),
   body('name').isLength({ min: 5 }),
   body('password').isLength({ min: 5 }).withMessage('Password must be at least 5 characters')
-   // Adjust validation as needed
 ], async (req, res) => {
   const errors = validationResult(req);
 
@@ -144,11 +134,25 @@ app.post("/loginuser", [
 const Orders = require('./model/Orders');
 app.post('/orderedData',async(req,res)=>{
   let data=req.body.order_data
-  console.log(data);
+  const currentDate = new Date();
+    
+    // Extract date and time components
+    const year = currentDate.getFullYear().toString().slice(-2); // Get last two digits of the year
+    const month = ('0' + (currentDate.getMonth() + 1)).slice(-2); // Add leading zero if needed
+    const date = ('0' + currentDate.getDate()).slice(-2); // Add leading zero if needed
+    const hours = ('0' + currentDate.getHours()).slice(-2); // Add leading zero if needed
+    const minutes = ('0' + currentDate.getMinutes()).slice(-2); // Add leading zero if needed
+    const seconds = ('0' + currentDate.getSeconds()).slice(-2); // Add leading zero if needed
+    
+    // Construct the order ID
+    const orderId = `${year}${month}${date}${hours}${minutes}${seconds}${req.body.phonenumber.slice(-4)}`;
+    console.log(orderId)
   await data.splice(0, 0, {
     Order_date: req.body.order_date,
     status: "Preparing",
     number:req.body.phonenumber,
+    Order_Id:orderId,
+    Total_price:req.body.Total_Price
   });
   let emid=await Orders.findOne({'email':req.body.email})
   if(emid===null){

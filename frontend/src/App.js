@@ -6,6 +6,7 @@ import Login from './pages/Login'
 import Signin from './pages/Signin';
 import { Cardprovider } from './components/Contexred';
 import Cart from './pages/Cart';
+import Footer from '../src/components/Fotter';
 import MyOrder from './pages/MyOrder';
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
           <Route path='/allordersmy'element={<MyOrder/>}/>
           <Route path='/asd' element={<Cart/>}/>
         </Routes>
-
+        <Footer/>
     </Cardprovider>
       
         

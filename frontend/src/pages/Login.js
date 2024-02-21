@@ -8,11 +8,12 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const [loader, setloader] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setloader(true);
     try {
       const response = await fetch(
         `https://espacito-client.onrender.com/loginuser`,
@@ -28,7 +29,7 @@ const Login = () => {
         }
       );
       const json = await response.json();
-      console.log(json);
+      setloader(false);
       if (!response.ok) {
         alert("email or password wrong");
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -54,6 +55,7 @@ const Login = () => {
 
   return (
     <>
+      {loader ? <span class="loader"></span> : ""}
       <div
         style={{
           backgroundImage: `url(${backgroundImage})`,
@@ -102,7 +104,7 @@ const Login = () => {
                 />
               </div>
               <button type="submit" className="btn btn-primary">
-                Submit
+                Submit {loader ? <span class="loader2"></span> : ""}
               </button>
               <Link to="/createuser" className="m-3 btn btn-success">
                 New User

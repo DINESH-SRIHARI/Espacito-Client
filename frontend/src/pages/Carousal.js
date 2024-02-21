@@ -4,16 +4,18 @@ import Card from "../components/Card";
 import freedel from "../statics/Freedel.jpg";
 export default function Carousal() {
   const [data, setData] = useState({ foodData: [], categoryData: [] });
-
+  const [loader, setloader] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.post(
-          `https://espacito-client.onrender.com/getalldata`
+          `https://espacito-client.onrender.com/getalldata` ||
+            `https://espacito-client.onrender.com/getalldata`
         );
         setData(response.data);
         console.log("Category Data:", data.categoryData);
         console.log("Food Data:", data.foodData);
+        setloader(false);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -23,6 +25,8 @@ export default function Carousal() {
 
   return (
     <div>
+      <span className="">{loader ? <span class="loader"></span> : ""}</span>
+
       <div
         id="carouselExampleAutoplaying"
         className="carousel slide"

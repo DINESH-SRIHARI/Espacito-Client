@@ -22,7 +22,7 @@ export default function Nav() {
     <div className="collapse navbar-collapse" id="navbarSupportedContent">
       <ul className="navbar-nav me-auto mb-2 mb-lg-0">
         <li className="nav-item">
-          <Link className="nav-link active" target="_blank" aria-current="page" to="https://sriharidinesh.vercel.app/">About Dev</Link>
+          
         </li>
         {(localStorage.getItem("authToken"))?
         <li className="nav-item">

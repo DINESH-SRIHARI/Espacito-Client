@@ -9,7 +9,7 @@ export default function Cart() {
   const dispatch = useDispatchCart();
 
   const audio = new Audio();
-  audio.src = aadio; // Corrected line
+  audio.src = aadio;
 
   if (data.length === 0) {
     return <div className="m-5 w-100 text-center fs-3">The Cart is Empty</div>;
@@ -49,6 +49,7 @@ export default function Cart() {
             email: userEmail,
             phonenumber: number,
             order_date: formattedDate,
+            Total_Price: totalPrice,
           }),
         }
       );

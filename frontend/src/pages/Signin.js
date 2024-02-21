@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import backgroungsign from "../statics/signin.jpg";
@@ -7,17 +7,38 @@ import sigin from "../css/sigin.css";
 export default function Signin() {
   const [credentials, setCredentials] = useState({
     name: "",
-    phone: "", // Updated field name for phone number
+    phone: "",
     email: "",
     password: "",
     geolocation: "",
   });
-
+  const [loader, setloader] = useState(false);
   let navigate = useNavigate();
+
+  const fetchUserLocation = () => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          const location = `${latitude},${longitude}`;
+          setCredentials({ ...credentials, geolocation: location });
+        },
+        (error) => {
+          console.error("Error getting user location:", error.message);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  };
+
+  useEffect(() => {
+    fetchUserLocation();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setloader(true);
     try {
       const response = await fetch(
         `https://espacito-client.onrender.com/createuser`,
@@ -28,7 +49,7 @@ export default function Signin() {
           },
           body: JSON.stringify({
             name: credentials.name,
-            phone: credentials.phone, // Updated field name for phone number
+            phone: credentials.phone,
             email: credentials.email,
             password: credentials.password,
             geolocation: credentials.geolocation,
@@ -39,9 +60,11 @@ export default function Signin() {
       if (!response.ok) {
         alert("There is some error. Please check it");
         console.log(response);
+        setloader(false);
         throw new Error(`HTTP error! Status: ${response.status}`);
       } else {
         alert("New User Added Successfully");
+        setloader(false);
         navigate("/login");
       }
     } catch (error) {
@@ -98,8 +121,8 @@ export default function Signin() {
                 className="form-control"
                 id="exampleInputPhone"
                 aria-describedby="emailHelp"
-                name="phone" // Updated field name for phone number
-                value={credentials.phone} // Updated field name for phone number
+                name="phone"
+                value={credentials.phone}
                 onChange={handleChange}
               />
             </div>
@@ -160,7 +183,7 @@ export default function Signin() {
               />
             </div>
             <button type="submit" className="btn btn-primary">
-              Submit
+              Submit{loader ? <span class="loader2"></span> : ""}
             </button>
             <Link to="/login" className="m-3 btn btn-danger">
               Already User
