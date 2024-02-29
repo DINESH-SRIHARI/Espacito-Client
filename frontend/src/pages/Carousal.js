@@ -9,8 +9,8 @@ export default function Carousal() {
     const fetchData = async () => {
       try {
         const response = await axios.post(
-          `http://localhost:5000/getalldata` ||
-            `http://localhost:5000/getalldata`
+          `https://espacito-client.onrender.com/getalldata` ||
+            `https://espacito-client.onrender.com/getalldata`
         );
         setData(response.data);
         console.log("Category Data:", data.categoryData);

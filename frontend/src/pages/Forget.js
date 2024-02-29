@@ -24,19 +24,21 @@ const Forget = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setloader(true);
-    console.log("+"+phone+" "+credentials.password)
+    console.log("+" + phone + " " + credentials.password);
     try {
-      const response = await fetch(`http://localhost:5000/updatepass`, {
-        
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          Phone: "+"+phone,
-          password: credentials.password,
-        }),
-      });
+      const response = await fetch(
+        `https://espacito-client.onrender.com/updatepass`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            Phone: "+" + phone,
+            password: credentials.password,
+          }),
+        }
+      );
       const json = await response.json();
       setloader(false);
       if (!response.ok) {
@@ -60,24 +62,25 @@ const Forget = () => {
   };
 
   const handleVerification = async () => {
-    
     try {
-      const response = await fetch(`http://localhost:5000/checkphone`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          phone:"+" +phone,
-        }),
-      });
-      
+      const response = await fetch(
+        `https://espacito-client.onrender.com/checkphone`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            phone: "+" + phone,
+          }),
+        }
+      );
+
       if (response.ok) {
-       
-        const data = await response.text(); 
+        const data = await response.text();
         if (data === "Valid Number") {
-            setOtp(true);
-         
+          setOtp(true);
+
           try {
             const recaptchaVerifier = new RecaptchaVerifier(
               auth,
@@ -96,12 +99,10 @@ const Forget = () => {
             alert("Enter the valid number");
           }
         } else {
-          
           alert("Invalid phone number ");
-          console.log(phone)
+          console.log(phone);
         }
       } else {
-        
         console.log("Response not ok");
       }
     } catch (error) {
@@ -114,7 +115,7 @@ const Forget = () => {
       console.log(data);
       alert("verification successful Update The Password");
       setVerified(true);
-      setOtp(false)
+      setOtp(false);
     } catch (error) {
       alert("enter a valid otp");
       console.log(error);
@@ -164,20 +165,24 @@ const Forget = () => {
                     value={phone}
                     onChange={(value) => setPhone(value)}
                   />
-                  {verified?"":<button
-                    style={{
-                      background: "none",
-                      border: "none",
-                      marginLeft: "-50px",
-                      opacity: "0.5",
-                    }}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handleVerification();
-                    }}
-                  >
-                    Verify
-                  </button>}
+                  {verified ? (
+                    ""
+                  ) : (
+                    <button
+                      style={{
+                        background: "none",
+                        border: "none",
+                        marginLeft: "-50px",
+                        opacity: "0.5",
+                      }}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleVerification();
+                      }}
+                    >
+                      Verify
+                    </button>
+                  )}
                   <div ref={recaptchaRef}></div>
                 </div>
                 {otp ? (

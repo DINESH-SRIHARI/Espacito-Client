@@ -19,7 +19,7 @@ export default function Signin() {
   const [otpin, setOtpin] = useState("");
   const [phone, setPhone] = useState("");
   const [user, setuser] = useState(null);
-  const [verified,setverified]=useState(false);
+  const [verified, setverified] = useState(false);
   const recaptchaRef = useRef(null);
   let navigate = useNavigate();
 
@@ -68,8 +68,8 @@ export default function Signin() {
     try {
       const data = await user.confirm(otpin);
       console.log(data);
-      alert("verification successful")
-      setverified(true)
+      alert("verification successful");
+      setverified(true);
     } catch (error) {
       alert("enter a valid otp");
       console.log(error);
@@ -79,22 +79,25 @@ export default function Signin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoader(true);
-    if(verified){
+    if (verified) {
       try {
-        const response = await fetch(`http://localhost:5000/createuser`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: credentials.name,
-            phone: `+${phone}`,
-            email: credentials.email,
-            password: credentials.password,
-            geolocation: credentials.geolocation,
-          }),
-        });
-  
+        const response = await fetch(
+          `https://espacito-client.onrender.com/createuser`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: credentials.name,
+              phone: `+${phone}`,
+              email: credentials.email,
+              password: credentials.password,
+              geolocation: credentials.geolocation,
+            }),
+          }
+        );
+
         if (!response.ok) {
           alert("There is some error. Please check it");
           console.log(response);
@@ -108,9 +111,9 @@ export default function Signin() {
       } catch (error) {
         console.error("Error during fetch:", error.message);
       }
-    }else{
-      setLoader(false)
-      alert("Verify your mobile number to create a Account")
+    } else {
+      setLoader(false);
+      alert("Verify your mobile number to create a Account");
     }
   };
 
