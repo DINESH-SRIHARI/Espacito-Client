@@ -23,6 +23,7 @@ export default function Cart() {
     try {
       let userEmail = localStorage.getItem("userEmail");
       let number = localStorage.getItem("phonenumber");
+      let geoloc = localStorage.getItem("location");
       setLoading(true);
 
       var currentDate = new Date();
@@ -49,6 +50,7 @@ export default function Cart() {
             email: userEmail,
             phonenumber: number,
             order_date: formattedDate,
+            location: geoloc,
             Total_Price: totalPrice,
           }),
         }

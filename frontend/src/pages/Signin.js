@@ -14,6 +14,7 @@ export default function Signin() {
     password: "",
     geolocation: "",
   });
+  const [eyepass, seteyepass] = useState(false);
   const [loader, setLoader] = useState(false);
   const [otp, setOtp] = useState(false);
   const [otpin, setOtpin] = useState("");
@@ -244,14 +245,26 @@ export default function Signin() {
               >
                 Password
               </label>
-              <input
-                type="password"
-                className="form-control"
-                id="exampleInputPassword1"
-                name="password"
-                value={credentials.password}
-                onChange={handleChange}
-              />
+              <div className="d-flex">
+                <input
+                  type={eyepass ? "text" : "password"}
+                  className="form-control"
+                  id="exampleInputPassword1"
+                  name="password"
+                  value={credentials.password}
+                  onChange={handleChange}
+                />
+                <button
+                  className="btn"
+                  style={{ marginLeft: "-50px" }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    seteyepass(!eyepass);
+                  }}
+                >
+                  {eyepass ? "👀" : "👁️"}
+                </button>
+              </div>
               <div id="emailHelp" className="form-text">
                 The Password Must Be A Minimum of 5 letters
               </div>

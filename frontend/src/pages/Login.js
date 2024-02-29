@@ -9,6 +9,7 @@ const Login = () => {
     password: "",
   });
   const [loader, setloader] = useState(false);
+  const [eyepass, seteyepass] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -29,6 +30,7 @@ const Login = () => {
         }
       );
       const json = await response.json();
+      console.log(json);
       setloader(false);
       if (!response.ok) {
         alert("Enter the valid Email and Password");
@@ -42,6 +44,7 @@ const Login = () => {
         localStorage.setItem("userEmail", credentials.email);
         localStorage.setItem("authToken", json.authtoken);
         localStorage.setItem("phonenumber", json.number);
+        localStorage.setItem("location", json.loc);
         navigate("/");
       }
     } catch (error) {
@@ -69,7 +72,7 @@ const Login = () => {
       >
         <div className="row container ">
           <div className="col-md-4">
-            <form onSubmit={handleSubmit}>
+            <form>
               <div className="m-3">
                 <label
                   htmlFor="exampleInputEmail1"
@@ -94,20 +97,32 @@ const Login = () => {
                 >
                   Password
                 </label>
-                <input
-                  type="password"
-                  className="form-control"
-                  id="exampleInputPassword1"
-                  name="password"
-                  value={credentials.password}
-                  onChange={handleChange}
-                />
+                <div className="d-flex">
+                  <input
+                    type={eyepass ? "text" : "password"}
+                    className="form-control"
+                    id="exampleInputPassword1"
+                    name="password"
+                    value={credentials.password}
+                    onChange={handleChange}
+                  />
+                  <button
+                    className="btn"
+                    style={{ marginLeft: "-50px" }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      seteyepass(!eyepass);
+                    }}
+                  >
+                    {eyepass ? "👀" : "👁️"}
+                  </button>
+                </div>
                 <div className="mt-2 fs-4">
                   <Link to={"/forgetpassword"}>Forgotten password?</Link>
                 </div>
               </div>
 
-              <button type="submit" className="btn btn-primary">
+              <button onClick={handleSubmit} className="btn btn-primary">
                 Login {loader ? <span class="loader2"></span> : ""}
               </button>
               <Link to="/createuser" className="m-3 btn btn-success">

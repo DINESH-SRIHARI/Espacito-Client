@@ -13,7 +13,9 @@ const Forget = () => {
   const [user, setuser] = useState(null);
   const [verified, setVerified] = useState(false);
   const recaptchaRef = useRef(null);
+  const [showPassword, setShowPassword] = useState(false); // State to track password visibility
 
+  const [eyepass, seteyepass] = useState(false);
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
@@ -215,14 +217,26 @@ const Forget = () => {
                   >
                     Enter New Password
                   </label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="exampleInputPassword1"
-                    name="password"
-                    value={credentials.password}
-                    onChange={handleChange}
-                  />
+                  <div className="password-input d-flex">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      className="form-control"
+                      id="exampleInputPassword1"
+                      name="password"
+                      value={credentials.password}
+                      onChange={handleChange}
+                    />
+                    <button
+                      className="btn"
+                      style={{ marginLeft: "-50px" }}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        seteyepass(!eyepass);
+                      }}
+                    >
+                      {eyepass ? "👀" : "👁️"}
+                    </button>
+                  </div>
                 </div>
               ) : (
                 ""

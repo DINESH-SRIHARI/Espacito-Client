@@ -12,15 +12,7 @@ app.use(cors({
   credentials: true,
   optionsSuccessStatus: 204,
 }));
-// app.use(
-//   cookiesession({
-//     name:"session",
-//     keys:["Esposito"],
-//     maxAge:24*60*60*100
-//   })
-// )
-// app.use(passport.initialize())
-// app.use(passport.session())
+
 const bcrypt=require('bcryptjs')
 const jwt=require('jsonwebtoken')
 //-------------------------database connectio
@@ -120,7 +112,7 @@ app.post("/loginuser", [
 
   try {
     const userRecord = await User.findOne({ email: req.body.email });
-
+    
     if (!userRecord) {
       return res.status(400).json({ errors: [{ msg: 'Invalid Email Address' }] });
     }
@@ -133,9 +125,12 @@ app.post("/loginuser", [
           id:userRecord.id
       }
       }
+      
       const phonenumber=userRecord.phone
+     
+      const location =userRecord.location     
       const authtoken=jwt.sign(data,jwtSecret)
-      res.json({ success: true, authtoken:authtoken,number:phonenumber });
+      res.json({ success: true, authtoken:authtoken,number:phonenumber,loc:location});
   } catch (error) {
     console.error("Error during login:", error);
     res.status(500).json({ message: 'Internal Server Error' });
@@ -164,6 +159,7 @@ app.post('/orderedData',async(req,res)=>{
     status: "Preparing",
     number:req.body.phonenumber,
     Order_Id:orderId,
+    Geolocation:req.body.location,
     Total_price:req.body.Total_Price
   });
   let emid=await Orders.findOne({'email':req.body.email})
