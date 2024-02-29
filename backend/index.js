@@ -2,6 +2,9 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const cors = require("cors");
+const passport =require('passport')
+const cookiesession =require('cookie-session')
+const passportsetup=require("./passport")
 const jwtSecret="MyNameIsEnduvasiSrihariDinesh!@#"
 app.use(cors({
   origin: ["http://localhost:3000", "https://espacito.netlify.app"],
@@ -9,6 +12,15 @@ app.use(cors({
   credentials: true,
   optionsSuccessStatus: 204,
 }));
+// app.use(
+//   cookiesession({
+//     name:"session",
+//     keys:["Esposito"],
+//     maxAge:24*60*60*100
+//   })
+// )
+// app.use(passport.initialize())
+// app.use(passport.session())
 const bcrypt=require('bcryptjs')
 const jwt=require('jsonwebtoken')
 //-------------------------database connectio
@@ -180,6 +192,7 @@ app.post('/orderedData',async(req,res)=>{
 })
 
 app.post('/myorderedData', async (req, res) => {
+  
   try {
     const mydata = await Orders.findOne({ email: req.body.email });
     res.json({ Orderdata: mydata || [] });
@@ -189,7 +202,40 @@ app.post('/myorderedData', async (req, res) => {
   }
 });
 
-
+//forget password
+app.post('/checkphone', async (req, res) => {
+  try {
+    const mydata = await User.find({ phone: req.body.phone });
+    console.log("here1");
+    if (mydata.length > 0) {
+      res.status(200).send("Valid Number");
+    } else {
+      res.status(200).send("Invalid Number");
+    }
+  } catch (error) {
+    console.error('Error fetching my order data:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+//update password
+app.post('/updatepass', async (req, res) => {
+  try {
+    
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(req.body.password, salt);
+    console.log(hashedPassword)
+    await User.updateOne(
+      {phone: req.body.Phone},
+      {$set:{
+        password: hashedPassword,
+      }}
+    )
+    res.status(201).json({success: true, message: 'success' });
+  } catch (error) {
+    console.error('Error fetching my order data:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 const PORT = process.env.PORT || 5000;
 

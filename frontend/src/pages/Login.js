@@ -15,23 +15,20 @@ const Login = () => {
     e.preventDefault();
     setloader(true);
     try {
-      const response = await fetch(
-        `https://espacito-client.onrender.com/loginuser`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: credentials.email,
-            password: credentials.password,
-          }),
-        }
-      );
+      const response = await fetch(`http://localhost:5000/loginuser`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: credentials.email,
+          password: credentials.password,
+        }),
+      });
       const json = await response.json();
       setloader(false);
       if (!response.ok) {
-        alert("email or password wrong");
+        alert("Enter the valid Email and Password");
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
       if (!json.success) {
@@ -102,9 +99,13 @@ const Login = () => {
                   value={credentials.password}
                   onChange={handleChange}
                 />
+                <div className="mt-2 fs-4">
+                  <Link to={"/forgetpassword"}>Forgotten password?</Link>
+                </div>
               </div>
+
               <button type="submit" className="btn btn-primary">
-                Submit {loader ? <span class="loader2"></span> : ""}
+                Login {loader ? <span class="loader2"></span> : ""}
               </button>
               <Link to="/createuser" className="m-3 btn btn-success">
                 New User

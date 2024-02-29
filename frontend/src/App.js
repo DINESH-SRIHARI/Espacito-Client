@@ -8,6 +8,9 @@ import { Cardprovider } from './components/Contexred';
 import Cart from './pages/Cart';
 import Footer from '../src/components/Fotter';
 import MyOrder from './pages/MyOrder';
+import TermsAndConditions from './About/Term';
+import PrivacyPolicy from './About/Privacy';
+import Forget from './pages/Forget'
 function App() {
   return (
     <Cardprovider>
@@ -19,6 +22,9 @@ function App() {
           <Route path='/createuser'element={<Signin/>}/>
           <Route path='/allordersmy'element={<MyOrder/>}/>
           <Route path='/asd' element={<Cart/>}/>
+          <Route path='/term' element={<TermsAndConditions/>}/>
+          <Route path='/policy' element={<PrivacyPolicy/>}/>
+          <Route path='/forgetpassword' element={<Forget/>}/>
         </Routes>
         <Footer/>
     </Cardprovider>

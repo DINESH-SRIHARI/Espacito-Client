@@ -1,0 +1,26 @@
+.title {
+    text-align: center;
+    color: #f8de7e; /* Yellow color */
+}
+
+.content {
+    margin-top: 20px;
+}
+
+h2 {
+    margin-top: 20px;
+    color: #f8de7e; /* Yellow color */
+}
+
+p {
+    margin-bottom: 10px;
+    line-height: 1.6;
+    color: #fff; /* White color for contrast */
+}
+
+.terms-card {
+    background-color: #333; /* Dark background color */
+    border: none;
+}
+
+/* Add more custom styles as needed */

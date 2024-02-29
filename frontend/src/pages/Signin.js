@@ -1,18 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import backgroungsign from "../statics/signin.jpg";
-import sigin from "../css/sigin.css";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { auth } from "../firebase/setup";
 
 export default function Signin() {
   const [credentials, setCredentials] = useState({
     name: "",
-    phone: "",
     email: "",
     password: "",
     geolocation: "",
   });
-  const [loader, setloader] = useState(false);
+  const [loader, setLoader] = useState(false);
+  const [otp, setOtp] = useState(false);
+  const [otpin, setOtpin] = useState("");
+  const [phone, setPhone] = useState("");
+  const [user, setuser] = useState(null);
+  const [verified,setverified]=useState(false);
+  const recaptchaRef = useRef(null);
   let navigate = useNavigate();
 
   const fetchUserLocation = () => {
@@ -36,39 +44,73 @@ export default function Signin() {
     fetchUserLocation();
   }, []);
 
+  const handleVerification = async () => {
+    setOtp(true);
+    try {
+      const recaptchaVerifier = new RecaptchaVerifier(
+        auth,
+        recaptchaRef.current,
+        {
+          size: "invisible",
+        }
+      );
+      const confirm = await signInWithPhoneNumber(
+        auth,
+        `+${phone}`,
+        recaptchaVerifier
+      );
+      setuser(confirm);
+    } catch (error) {
+      alert("enter the valid number");
+    }
+  };
+  const handleCheck = async () => {
+    try {
+      const data = await user.confirm(otpin);
+      console.log(data);
+      alert("verification successful")
+      setverified(true)
+    } catch (error) {
+      alert("enter a valid otp");
+      console.log(error);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setloader(true);
-    try {
-      const response = await fetch(
-        `https://espacito-client.onrender.com/createuser`,
-        {
+    setLoader(true);
+    if(verified){
+      try {
+        const response = await fetch(`http://localhost:5000/createuser`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
             name: credentials.name,
-            phone: credentials.phone,
+            phone: `+${phone}`,
             email: credentials.email,
             password: credentials.password,
             geolocation: credentials.geolocation,
           }),
+        });
+  
+        if (!response.ok) {
+          alert("There is some error. Please check it");
+          console.log(response);
+          setLoader(false);
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        } else {
+          alert("New User Added Successfully");
+          setLoader(false);
+          navigate("/login");
         }
-      );
-
-      if (!response.ok) {
-        alert("There is some error. Please check it");
-        console.log(response);
-        setloader(false);
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      } else {
-        alert("New User Added Successfully");
-        setloader(false);
-        navigate("/login");
+      } catch (error) {
+        console.error("Error during fetch:", error.message);
       }
-    } catch (error) {
-      console.error("Error during fetch:", error.message);
+    }else{
+      setLoader(false)
+      alert("Verify your mobile number to create a Account")
     }
   };
 
@@ -91,7 +133,7 @@ export default function Signin() {
         }}
       >
         <div className="col-md-4 ">
-          <form onSubmit={handleSubmit}>
+          <form>
             <div className="m-3">
               <label
                 htmlFor="exampleInputEmail1"
@@ -116,15 +158,61 @@ export default function Signin() {
               >
                 Phone Number
               </label>
-              <input
-                type="text"
-                className="form-control"
-                id="exampleInputPhone"
-                aria-describedby="emailHelp"
-                name="phone"
-                value={credentials.phone}
-                onChange={handleChange}
-              />
+
+              <div className="d-flex">
+                <PhoneInput
+                  style={{
+                    backgroundColor: "#22252b",
+                    boxSizing: "border-box",
+                    borderRadius: "5px",
+                  }}
+                  inputStyle={{
+                    backgroundColor: "#22252b",
+                    color: "white",
+                    outline: "none",
+                    border: "none",
+                  }}
+                  dropdownStyle={{ backgroundColor: "black", color: "white" }}
+                  country={"in"}
+                  value={phone}
+                  onChange={(value) => setPhone(value)}
+                />
+                <button
+                  style={{
+                    background: "none",
+                    border: "none",
+                    marginLeft: "-50px",
+                    opacity: "0.5",
+                  }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleVerification();
+                  }}
+                >
+                  Verify
+                </button>
+                <div ref={recaptchaRef}></div>
+              </div>
+              {otp ? (
+                <div className="d-flex">
+                  <input
+                    style={{ marginTop: "3px" }}
+                    value={otpin}
+                    onChange={(e) => setOtpin(e.target.value)}
+                  />
+                  <button
+                    className="btn btn-success p-1"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleCheck();
+                    }}
+                  >
+                    check
+                  </button>
+                </div>
+              ) : (
+                ""
+              )}
             </div>
             <div className="m-3">
               <label
@@ -182,8 +270,8 @@ export default function Signin() {
                 onChange={handleChange}
               />
             </div>
-            <button type="submit" className="btn btn-primary">
-              Submit{loader ? <span class="loader2"></span> : ""}
+            <button onClick={handleSubmit} className="btn btn-primary">
+              Submit{loader ? <span className="loader2"></span> : ""}
             </button>
             <Link to="/login" className="m-3 btn btn-danger">
               Already User
