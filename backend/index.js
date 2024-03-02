@@ -128,14 +128,18 @@ app.post("/loginuser", [
       
       const phonenumber=userRecord.phone
      
-      const location =userRecord.location     
+      const location =userRecord.location
+      const id=userRecord.id 
+      console.log(userRecord)
+      console.log(id)    
       const authtoken=jwt.sign(data,jwtSecret)
-      res.json({ success: true, authtoken:authtoken,number:phonenumber,loc:location});
+      res.json({ success: true, authtoken:authtoken,number:phonenumber,loc:location,uid:id});
   } catch (error) {
     console.error("Error during login:", error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
+
 
 ////userorders
 const Orders = require('./model/Orders');
@@ -186,6 +190,45 @@ app.post('/orderedData',async(req,res)=>{
     }
   }
 })
+//my page user
+app.get('/getalldata/:id', async (req, res) => {
+  const { id } = req.params;
+  console.log("this is called admin edit")
+  try {
+    // Use the id parameter to fetch data from MongoDB
+    const result = await User.findById(id);
+    
+    if (!result) {
+      return res.status(404).json({ error: 'Data not found' });
+    }
+    console.log(result)
+    // Send the response back to the client
+    res.json(result);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+//update details 
+app.post('/update/:id', async (req, res) => {
+  const { id } = req.params;
+  console.log(id)
+  const {name,location} = req.body;
+  try {
+    
+    const result = await User.findByIdAndUpdate(id, {name,location  }, { new: true });
+    
+    if (!result) {
+      return res.status(404).json({ error: 'Data not found' });
+    }
+    
+    res.status(201).json({success: true});
+    
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 app.post('/myorderedData', async (req, res) => {
   

@@ -24,6 +24,7 @@ export default function Cart() {
       let userEmail = localStorage.getItem("userEmail");
       let number = localStorage.getItem("phonenumber");
       let geoloc = localStorage.getItem("location");
+      console.log(geoloc);
       setLoading(true);
 
       var currentDate = new Date();

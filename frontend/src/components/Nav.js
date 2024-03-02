@@ -30,7 +30,7 @@ export default function Nav() {
       </li>:""}
       </ul>
       {(localStorage.getItem("authToken"))?
-      <div>
+      <div className="d-flex">
                 <div className="btn  text-dark mx-1 bg-dark" aria-current="page" onClick={()=>{setcartview(true)}}>🛒
                 <h6
   className="bg-danger text-white rounded-circle p-1"
@@ -41,6 +41,11 @@ export default function Nav() {
 
                   </div>
                   {cartview? <Modal onClose={()=>setcartview(false)}><Cart/></Modal>:null}
+                 <Link className="btn  text-dark mx-1 bg-dark" to={`/myprofile/${localStorage.getItem('uid')}`}
+><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="warning" class="bi bi-person-circle" viewBox="0 0 16 16">
+  <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+</svg></Link> 
         <div className="btn bg-dark text-danger mx-1" onClick={handleLogout}>Logout</div>
         </div>
       : <div className="d-flex">

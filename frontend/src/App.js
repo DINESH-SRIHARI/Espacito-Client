@@ -11,6 +11,7 @@ import MyOrder from './pages/MyOrder';
 import TermsAndConditions from './About/Term';
 import PrivacyPolicy from './About/Privacy';
 import Forget from './pages/Forget'
+import Myacc from './pages/Myacc'
 function App() {
   return (
     <Cardprovider>
@@ -25,6 +26,7 @@ function App() {
           <Route path='/term' element={<TermsAndConditions/>}/>
           <Route path='/policy' element={<PrivacyPolicy/>}/>
           <Route path='/forgetpassword' element={<Forget/>}/>
+          <Route path={`/myprofile/${localStorage.getItem('uid')}`} element={<Myacc/>}/>
         </Routes>
         <Footer/>
     </Cardprovider>

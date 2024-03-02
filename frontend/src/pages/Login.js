@@ -45,6 +45,8 @@ const Login = () => {
         localStorage.setItem("authToken", json.authtoken);
         localStorage.setItem("phonenumber", json.number);
         localStorage.setItem("location", json.loc);
+        localStorage.setItem("uid", json.uid);
+        console.log(json.loc);
         navigate("/");
       }
     } catch (error) {
