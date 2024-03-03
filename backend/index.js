@@ -89,8 +89,19 @@ app.post("/createuser", [
     });
 
     await newUser.save();
-
-    res.status(201).json({ message: 'User created successfully', user: newUser });
+    const userRecord = await User.findOne({ email: req.body.email });
+    const data={
+      user:{
+        id:userRecord.id
+    }
+    }
+    
+    const phonenumber=userRecord.phone
+   
+    const location =userRecord.location
+    const id=userRecord.id     
+    const authtoken=jwt.sign(data,jwtSecret)
+    res.status(201).json({success: true, authtoken:authtoken,number:phonenumber,loc:location,uid:id})
   } catch (error) {
     console.error("Error saving user:", error);
     res.status(500).json({ message: 'Internal Server Error' });

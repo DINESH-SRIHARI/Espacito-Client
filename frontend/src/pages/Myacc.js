@@ -38,7 +38,7 @@ export default function Signin() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://espacito-client.onrender.com/getalldata/${id}`
+          `http://localhost:5000/getalldata/${id}`
         );
         setCredentials(response.data);
         setPhone(response.data.phone);
@@ -54,19 +54,16 @@ export default function Signin() {
     e.preventDefault();
     setLoader(true);
     try {
-      const response = await fetch(
-        `https://espacito-client.onrender.com/update/${id}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: credentials.name,
-            location: credentials.geolocation,
-          }),
-        }
-      );
+      const response = await fetch(`http://localhost:5000/update/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: credentials.name,
+          location: credentials.geolocation,
+        }),
+      });
       console.log(response);
       if (!response.ok) {
         alert("There is some error. Please check it");

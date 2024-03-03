@@ -9,12 +9,10 @@ export default function Carousal() {
     const fetchData = async () => {
       try {
         const response = await axios.post(
-          `https://espacito-client.onrender.com/getalldata` ||
-            `https://espacito-client.onrender.com/getalldata`
+          `http://localhost:5000/getalldata` ||
+            `http://localhost:5000/getalldata`
         );
         setData(response.data);
-        console.log("Category Data:", data.categoryData);
-        console.log("Food Data:", data.foodData);
         setloader(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -99,6 +97,10 @@ export default function Carousal() {
           <img src={freedel} className="gimg" />
         </div>
       </div>
+      <h1>
+        {" "}
+        <span class="crdload"></span>
+      </h1>
 
       <div className="maindiv">
         {data.categoryData.map((foodcat) => (

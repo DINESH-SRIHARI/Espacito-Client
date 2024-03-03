@@ -28,19 +28,16 @@ const Forget = () => {
     setloader(true);
     console.log("+" + phone + " " + credentials.password);
     try {
-      const response = await fetch(
-        `https://espacito-client.onrender.com/updatepass`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            Phone: "+" + phone,
-            password: credentials.password,
-          }),
-        }
-      );
+      const response = await fetch(`http://localhost:5000/updatepass`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          Phone: "+" + phone,
+          password: credentials.password,
+        }),
+      });
       const json = await response.json();
       setloader(false);
       if (!response.ok) {
@@ -65,18 +62,15 @@ const Forget = () => {
 
   const handleVerification = async () => {
     try {
-      const response = await fetch(
-        `https://espacito-client.onrender.com/checkphone`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            phone: "+" + phone,
-          }),
-        }
-      );
+      const response = await fetch(`http://localhost:5000/checkphone`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          phone: "+" + phone,
+        }),
+      });
 
       if (response.ok) {
         const data = await response.text();
