@@ -1,18 +1,58 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import Card from "../components/Card";
 import freedel from "../statics/Freedel.jpg";
 export default function Carousal() {
   const [data, setData] = useState({ foodData: [], categoryData: [] });
   const [loader, setloader] = useState(true);
+  const [search, setSearch] = useState();
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    setloader(true);
+    if (search == "") {
+      try {
+        const response = await axios.post(
+          `https://espacito-client.onrender.com
+/getalldata`
+        );
+        setData(response.data);
+        setloader(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    } else {
+      try {
+        const response = await fetch(
+          `https://espacito-client.onrender.com
+/search`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              Item: search,
+            }),
+          }
+        );
+        const json = await response.json();
+        setData(json);
+        setloader(false);
+      } catch (error) {
+        console.error("Error during fetch:", error.message);
+      }
+    }
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.post(
-          `https://espacito-client.onrender.com/getalldata` ||
-            `https://espacito-client.onrender.com/getalldata`
+          `https://espacito-client.onrender.com
+/getalldata`
         );
         setData(response.data);
+        console.log(response.data);
         setloader(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -38,8 +78,13 @@ export default function Carousal() {
                 type="search"
                 placeholder="Search"
                 aria-label="Search"
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  console.log(search);
+                }}
               />
-              <button className="btn btn-warning" type="submit">
+              <button className="btn btn-warning" onClick={handleSearch}>
                 Search
               </button>
             </form>

@@ -29,7 +29,8 @@ const Forget = () => {
     console.log("+" + phone + " " + credentials.password);
     try {
       const response = await fetch(
-        `https://espacito-client.onrender.com/updatepass`,
+        `https://espacito-client.onrender.com
+/updatepass`,
         {
           method: "POST",
           headers: {
@@ -66,7 +67,8 @@ const Forget = () => {
   const handleVerification = async () => {
     try {
       const response = await fetch(
-        `https://espacito-client.onrender.com/checkphone`,
+        `https://espacito-client.onrender.com
+/checkphone`,
         {
           method: "POST",
           headers: {

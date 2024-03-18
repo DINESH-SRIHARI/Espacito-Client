@@ -38,7 +38,8 @@ export default function Signin() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://espacito-client.onrender.com/getalldata/${id}`
+          `https://espacito-client.onrender.com
+/getalldata/${id}`
         );
         setCredentials(response.data);
         setPhone(response.data.phone);
@@ -55,7 +56,8 @@ export default function Signin() {
     setLoader(true);
     try {
       const response = await fetch(
-        `https://espacito-client.onrender.com/update/${id}`,
+        `https://espacito-client.onrender.com
+/update/${id}`,
         {
           method: "POST",
           headers: {

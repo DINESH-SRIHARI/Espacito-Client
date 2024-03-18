@@ -6,7 +6,8 @@ export default function MyOrder() {
   const fetchMyOrder = async () => {
     try {
       const response = await fetch(
-        `https://espacito-client.onrender.com/myorderedData`,
+        `https://espacito-client.onrender.com
+/myorderedData`,
         {
           method: "POST",
           headers: {

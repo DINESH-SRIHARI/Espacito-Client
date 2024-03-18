@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import backgroundImage from "../statics/loginbg.jpg";
 
@@ -11,13 +11,18 @@ const Login = () => {
   const [loader, setloader] = useState(false);
   const [eyepass, seteyepass] = useState(false);
   const navigate = useNavigate();
-
+  useEffect(() => {
+    if (localStorage.getItem("phonenumber")) {
+      navigate("/");
+    }
+  }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setloader(true);
     try {
       const response = await fetch(
-        `https://espacito-client.onrender.com/loginuser`,
+        `https://espacito-client.onrender.com
+/loginuser`,
         {
           method: "POST",
           headers: {

@@ -40,7 +40,8 @@ export default function Cart() {
       var formattedDate = currentDate.toLocaleString("en-US", options);
 
       let response = await fetch(
-        `https://espacito-client.onrender.com/orderedData`,
+        `https://espacito-client.onrender.com
+/orderedData`,
         {
           method: "POST",
           headers: {

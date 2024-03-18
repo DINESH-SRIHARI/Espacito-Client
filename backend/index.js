@@ -12,7 +12,7 @@ app.use(cors({
   credentials: true,
   optionsSuccessStatus: 204,
 }));
-
+app.use(express.json()); 
 const bcrypt=require('bcryptjs')
 const jwt=require('jsonwebtoken')
 //-------------------------database connectio
@@ -32,8 +32,6 @@ const Food = require('./model/Food');
 
 
 
-
-
 //getting category
 const catschema=new mongoose.Schema({
   catname:String,
@@ -45,8 +43,6 @@ app.post('/getalldata', async (req, res) => {
     // Use the Mongoose find method to retrieve all documents from the collection
     const allData = await Food.find();
     const allDatacat = await category.find();
-    console.log("thhis is called")
-    // Combine the data into a single object
     const combinedData = {
       foodData: allData,
       categoryData: allDatacat
@@ -59,7 +55,23 @@ app.post('/getalldata', async (req, res) => {
   }
 });
 
-app.use(express.json()); 
+//search data
+
+app.post('/search', async (req, res) => {
+  try {
+    const allData = await Food.find({ name: { $regex: req.body.Item, $options: 'i' } });
+    const allDatacat = await category.find();
+    const combinedData = {
+      foodData: allData,
+      categoryData: allDatacat
+    };
+
+    res.json(combinedData);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
 
 
 const { body, validationResult } = require('express-validator');
