@@ -7,7 +7,7 @@ const cookiesession =require('cookie-session')
 const passportsetup=require("./passport")
 const jwtSecret="MyNameIsEnduvasiSrihariDinesh!@#"
 app.use(cors({
-  origin: ["http://localhost:3000", "https://espacito.netlify.app"],
+  origin: ["http://localhost:3000", "https://espocito.netlify.app"],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
   optionsSuccessStatus: 204,
